@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HUMZY AI INSIGHTS</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #E0E0E0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: fadeInDown 1s ease-in-out;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            overflow-y: auto;
+            height: 80vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #1E1E1E;
+            margin: 10px 0;
+            padding: 20px;
+            border-radius: 8px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        li:hover {
+            transform: scale(1.05);
+            background-color: #2E2E2E;
+        }
+        a {
+            color: #1E90FF;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        a:hover {
+            color: #FF4500;
+        }
+        .refresh-button {
+            margin-top: 20px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .refresh-button a {
+            color: #1E90FF;
+            text-decoration: none;
+            font-size: 1.2em;
+            border: 2px solid #1E90FF;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .refresh-button a:hover {
+            background-color: #1E90FF;
+            color: #E0E0E0;
+        }
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Select a Match</h1>
+    <div class="container">
+        <ul>
+            {% for data in match_data %}
+                <li>
+                    <a href="{{ url_for('match', match_id=loop.index) }}">{{ data['match_name'] }} 🏆</a>
+                    <p>Country: {{ data['country'] }} 🌍</p>
+                    <p>Date: {{ data['date_time'] }} 📅</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="refresh-button">
+        <a href="{{ url_for('refresh') }}">Refresh Matches</a>
+    </div>
+</body>
+</html>

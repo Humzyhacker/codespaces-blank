@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data['match_name'] }}</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #E0E0E0;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: auto;
+        }
+        h1, h2, h3 {
+            margin: 20px 0;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+            margin: 0 auto;
+        }
+        li {
+            margin: 10px 0;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .back-button {
+            margin-top: 20px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        .back-button a {
+            color: #1E90FF;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .back-button a:hover {
+            color: #FF4500;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            animation: fadeInUp 1s ease-in-out;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #2E2E2E;
+        }
+        tr:nth-child(even) {
+            background-color: #1E1E1E;
+        }
+        tr:hover {
+            background-color: #2E2E2E;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ data['match_name'] }} - {{ data['country'] }} - {{ data['date_time'] }}</h1>
+
+        <h2>Best Bets:</h2>
+        <ul>
+            {% for bet in data['best_bets'] %}
+                <li>{{ bet }} 🎰</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Team Performance Metrics:</h2>
+        {% for team, stats in data['team_stats'].items() %}
+            <h3>{{ team }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat_name, stat_value in stats.items() %}
+                        <tr>
+                            <td>{{ stat_name }}</td>
+                            <td>{{ stat_value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+
+        <h2>Alternative Predictions:</h2>
+        <ul>
+            {% for alt_pred in data['alt_predictions'] %}
+                <li>{{ alt_pred }} 🎯</li>
+            {% endfor %}
+        </ul>
+
+        <h2>Recent Matches:</h2>
+        {% for team, matches in data['recent_matches'].items() %}
+            <h3>{{ team }}</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Home Team</th>
+                        <th>Score</th>
+                        <th>Away Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for home_team, score, away_team in matches %}
+                        <tr>
+                            <td>{{ home_team }}</td>
+                            <td>{{ score }}</td>
+                            <td>{{ away_team }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+
+        <h2>Head-to-Head Records:</h2>
+        <p>These are the Head to Head Record of: {{ data['team_names'][0] }} vs {{ data['team_names'][1] }} 🏆</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Home Team</th>
+                    <th>Score</th>
+                    <th>Away Team</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for home_team, score, away_team in data['head_to_head'] %}
+                    <tr>
+                        <td>{{ home_team }}</td>
+                        <td>{{ score }}</td>
+                        <td>{{ away_team }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Prediction Insights:</h2>
+        <h3>Top 3 Predicted Scores:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Score</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for score, prob in data['top_scores'] %}
+                    <tr>
+                        <td>{{ data['team_names'][0] }} {{ score[0] }} - {{ score[1] }} {{ data['team_names'][1] }}</td>
+                        <td>{{ prob|round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>1X2 Probabilities:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Outcome</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outcome, prob in data['1X2'].items() %}
+                    <tr>
+                        <td>{{ outcome }}</td>
+                        <td>{{ prob|round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>BTTS Probabilities:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Outcome</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outcome, prob in data['BTTS'].items() %}
+                    <tr>
+                        <td>{{ outcome }}</td>
+                        <td>{{ prob|round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Over/Under Probabilities:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Outcome</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outcome, prob in data['Over/Under'].items() %}
+                    <tr>
+                        <td>{{ outcome }}</td>
+                        <td>{{ prob|round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Double Chance Probabilities:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Outcome</th>
+                    <th>Probability</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for outcome, prob in data['Double Chance'].items() %}
+                    <tr>
+                        <td>{{ outcome }}</td>
+                        <td>{{ prob|round(2) }}%</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <p>Confidence Level: {{ data['confidence_level'] }} 🔍</p>
+        <p>Predicted Score: {{ data['prediction_score'] }} ⚽</p>
+        <p>Win Rate: {{ data['win_rate'] }} 🏆</p>
+        <ul>
+            {% for rate in data['win_rates_text'] %}
+                <li>{{ rate }} 🏆</li>
+            {% endfor %}
+        </ul>
+        <p>{{ data['prediction_text'] }} 📝</p>
+
+        <div class="back-button">
+            <a href="{{ url_for('index') }}">Back to Matches</a>
+        </div>
+    </div>
+</body>
+</html>
